@@ -1,0 +1,49 @@
+clean_images.py ------------- v.(1.0)
+
+### Descripción
+
+El script "clean_images.py" es una herramienta de línea de comandos (CLI) desarrollada en Python que elimina todos los metadatos (como EXIF, IPTC, XMP, etc.) de archivos de imágenes. Utiliza la biblioteca Pillow para procesar las imágenes, creando copias limpias con un sufijo '_clean' en el nombre del archivo, sin alterar el original. Está diseñado para ser simple, cross-platform (compatible con Windows, macOS y Linux) y eficiente, permitiendo procesar archivos individuales o lotes en directorios. Es ideal para usuarios que necesitan proteger su privacidad al compartir imágenes, eliminando información como geolocalización, datos de cámara o timestamps.
+
+### Lista de Características y Usos
+
+#### Características:
+
+- **Procesamiento de metadatos**: Elimina completamente todos los metadatos de imágenes, creando una nueva imagen con solo los datos de píxeles.
+- **Soporte de formatos**: Compatible con extensiones comunes como .jpg, .jpeg, .png, .tiff, .tif, .bmp y .gif.
+- **Modo de entrada flexible**: Acepta uno o más archivos individuales o directorios enteros como input.
+- **Opciones de salida**: Permite especificar un directorio de salida opcional; de lo contrario, guarda las copias en el mismo directorio.
+- **Manejo de errores**: Incluye manejo robusto para archivos no encontrados, permisos denegados, imágenes inválidas o excepciones inesperadas, con mensajes claros.
+- **Conversión de modos**: Maneja modos de imagen especiales (como 'P' para paletas con transparencia) convirtiéndolos a RGB o RGBA para preservar la calidad.
+- **Interfaz CLI**: Usa argparse para argumentos como --input y --output-dir, con ayuda integrada y ejemplos de uso en la documentación.
+- **Comentarios y documentación**: Código bien comentado, con docstrings y un epílogo que muestra ejemplos de uso.
+- **Requisitos mínimos**: Solo depende de Pillow (instalable vía pip), sin otras dependencias externas.
+
+#### Usos:
+
+- **Privacidad y seguridad**: Eliminar datos sensibles de fotos antes de compartirlas en redes sociales o internet (e.g., ubicación GPS, modelo de cámara).
+- **Procesamiento en batch**: Limpiar múltiples imágenes en un directorio, útil para fotógrafos, periodistas o administradores de datos.
+- **Cumplimiento normativo**: En entornos donde se requiere anonimizar imágenes para GDPR u otras regulaciones de privacidad.
+- **Edición de imágenes**: Preparar archivos para ediciones posteriores sin metadatos heredados.
+- **Automatización**: Integrable en scripts o workflows más grandes, como pipelines de procesamiento de imágenes en servidores o herramientas forenses.
+
+### Análisis Técnico
+
+El script está bien estructurado y sigue buenas prácticas de programación en Python. Utiliza módulos estándar como os, sys y pathlib para manejo de paths, lo que asegura portabilidad cross-platform. La función principal `clean_image_metadata` es el núcleo: abre la imagen con Pillow, copia los píxeles a una nueva instancia (evitando transferir metadatos), y maneja conversiones de modo para evitar pérdidas de calidad (e.g., de 'P' a RGBA si hay transparencia). Para JPEG, fuerza conversión a RGB y aplica optimizaciones como quality=95, lo que preserva la integridad visual.
+
+Fortalezas:
+- **Eficiencia**: Procesa imágenes de manera ligera, sin requerir recursos intensivos.
+- **Seguridad**: No modifica el archivo original, reduciendo riesgos.
+- **Flexibilidad**: El uso de argparse permite una interfaz amigable y extensible.
+- **Robustez**: Buen manejo de excepciones, incluyendo UnidentifiedImageError para archivos no válidos.
+
+Debilidades:
+
+- **Limitaciones en formatos**: Aunque soporta varios, no incluye algunos avanzados como WebP o HEIC, que podrían requerir extensiones de Pillow.
+- **No recursivo en directorios**: Solo procesa el nivel superior de un directorio, no subdirectorios (podría mejorarse con os.walk).
+- **Calidad de salida**: Para JPEG, usa quality=95 fijo; podría ser parametrizable para control fino.
+- **Dependencia**: Requiere Pillow instalado; el script verifica y sale si no está, pero podría sugerir instalación automática (aunque es intencional para simplicidad).
+- **Seguridad adicional**: No verifica integridad post-procesamiento (e.g., hash comparison), lo que podría ser útil para validación.
+
+
+### Valoración
+★★★★☆ (4/5 estrellas)  
